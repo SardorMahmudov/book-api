@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Component\User\FooDto;
 use App\Controller\UserCreateAction;
+use App\Controller\UserFooAction;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -21,6 +23,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'path' => 'user/my/',
             'controller' => UserCreateAction::class
         ],
+        'foo'=> [
+            'method' => 'post',
+            'path' => 'users/foo',
+            'controller' => UserFooAction::class,
+            'input' => FooDto::class
+        ]
     ],
     itemOperations: ['delete','get'],
     denormalizationContext: ['groups' => ['user:write']],

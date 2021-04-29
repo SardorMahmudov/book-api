@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Controller\UserCreateAction;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -27,7 +28,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 )]
 
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -76,5 +77,24 @@ class User
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getSalt(): string
+    {
+        return '';
+    }
+
+    public function getUsername():string
+    {
+        return $this->getEmail();
+    }
+
+    public function eraseCredentials()
+    {
     }
 }

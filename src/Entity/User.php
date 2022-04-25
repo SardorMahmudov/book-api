@@ -10,6 +10,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         'get',
         'createUser' => [
             'method' => 'post',
-            'path' => 'user/my/',
+            'path' => 'users/my/',
             'controller' => UserCreateAction::class
         ],
         'foo'=> [
@@ -28,6 +29,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             'path' => 'users/foo',
             'controller' => UserFooAction::class,
             'input' => FooDto::class
+        ],
+        'auth' => [
+            'method' => 'post',
+            'path' => 'authentication_token'
         ]
     ],
     itemOperations: ['delete','get'],
@@ -35,7 +40,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
     normalizationContext: ['groups' => ['user:read']]
 
 )]
-
 class User implements UserInterface
 {
     /**
@@ -48,6 +52,8 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     #[Groups(['user:read','user:write'])]
     private $email;

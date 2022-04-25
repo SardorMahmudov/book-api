@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -10,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource()
  * @ORM\Entity(repositoryClass=BookRepository::class)
  */
+
+#[ApiFilter(SearchFilter::class, properties: [
+    'category' => 'exact',
+    'name' => 'partial',
+])]
+
 class Book
 {
     /**
